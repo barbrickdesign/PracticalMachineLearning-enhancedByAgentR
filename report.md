@@ -4,7 +4,7 @@ John Hopkins Practical Machine Learning Report
 Introduction
 ------------
 
-The project for this course is to use machine learning to predict the manner in which a group did excercise. The following objectives are to be met as part of this report: \* Describe how you built your model \* How you used cross validation \* Why you made the choices you did
+The project for this course is to use machine learning to predict the manner in which a group did exercise. The following objectives are to be met as part of this report: \* Describe how you built your model \* How you used cross validation \* Why you made the choices you did
 
 ### Project Setup
 
@@ -230,12 +230,36 @@ accuracy
 
 And the expected out of sample error:
 ``` r
-outOfSampleError <- sum(pred_rf == testing$classe)/length(pred_rf)
+outOfSampleError <- 1 - sum(pred_rf == testing$classe)/length(pred_rf)
+outOfSampleError
 ```
+
+    ## [1] 0
+
+### Variable Importance
+
+We can examine which features contribute most to the Random Forest model:
+
+``` r
+rfVarImp <- varImp(mod_rf)
+plot(rfVarImp, main = "Variable Importance (Top 20)", top = 20)
+```
+
+### Test Set Predictions
+
+Finally, we apply our model to the original test set provided for the quiz:
+
+``` r
+testPredictions <- predict(mod_rf, testCsv)
+testPredictions
+```
+
+    ##  [1] B A B A A E D B A A B C B A E E A B B B
+    ## Levels: A B C D E
 
 Summary
 -------
 
-In conclusion, we went with the Random Forest model because: \* It gave nearly the same accuracy as Boosted \* Performed much faster than building and combinding with the other algorithims \* With estimated accuracy of 99%, there is little need for improvement
+In conclusion, we went with the Random Forest model because: \* It gave nearly the same accuracy as Boosted \* Performed much faster than building and combining with the other algorithms \* With estimated accuracy of 99%, there is little need for improvement
 
 Our final Random Forest model was built using five fold cross validation.
